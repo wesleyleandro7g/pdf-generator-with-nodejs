@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import axios from 'axios'
 
-function App() {
+const App = () => {
+  function handleCallApi(){
+    axios({
+      url: 'http://localhost:3333/automatic', //your url
+      method: 'GET',
+      responseType: 'blob', // important
+    }).then((response) => {
+       const url = window.URL.createObjectURL(new Blob([response.data]));
+       const link = document.createElement('a');
+       link.href = url;
+       link.setAttribute('download', 'relatório.pdf'); //or any other extension
+       document.body.appendChild(link);
+       link.click();
+    });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={() => handleCallApi()} >Baixar relatório</button>
     </div>
   );
 }
